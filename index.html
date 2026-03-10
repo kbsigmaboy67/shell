@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google</title>
+    <link rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico">
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+        iframe { width: 100vw; height: 100vh; border: none; }
+    </style>
+</head>
+<body>
+
+    <iframe id="mainFrame" src="https://www.google.com/search?igu=1" allowfullscreen></iframe>
+
+    <script>
+        document.addEventListener('keydown', function(e) {
+            // Check for Ctrl + Alt + X
+            if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'x') {
+                e.preventDefault();
+
+                // 1. Open the secondary site in a new window/tab
+                const hackWin = window.open('about:blank', 'HackShell');
+                
+                if (hackWin) {
+                    hackWin.document.write(`
+                        <html>
+                        <body style="margin:0;padding:0;overflow:hidden">
+                            <iframe src="https://node2673.netlify.app" 
+                                    style="width:100vw;height:100vh;border:none" 
+                                    allowfullscreen>
+                            </iframe>
+                        </body>
+                        </html>
+                    `);
+                } else {
+                    alert("Pop-up blocked! Please allow pop-ups for the shortcut to work.");
+                }
+
+                // 2. Redirect the current tab back to Google (Safety Reset)
+                window.location.replace("https://www.google.com/search?igu=1");
+            }
+        });
+    </script>
+</body>
+</html>
