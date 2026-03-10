@@ -21,7 +21,7 @@
                 e.preventDefault();
 
                 // 1. Open the secondary site in a new window/tab
-                const hackWin = window.open('about:srcdoc#HackShell', 'HackShell', 'Pop');
+                const hackWin = window.open('about:srcdoc#HackShell', 'HackShell', 'popup=true');
                 
                 if (hackWin) {
                     hackWin.document.write(`
