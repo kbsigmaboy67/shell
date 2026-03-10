@@ -11,45 +11,21 @@ margin:0;
 height:100%;
 overflow:hidden;
 }
-
-/* invisible focus layer so page keeps keyboard control */
-#focusLayer{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-outline:none;
-}
-
 iframe{
-position:fixed;
-top:0;
-left:0;
 width:100vw;
 height:100vh;
 border:none;
-z-index:-1;
 }
 </style>
 </head>
 
-<body tabindex="0">
-
-<div id="focusLayer" tabindex="0"></div>
+<body>
 
 <iframe src="https://google.com?igu=1" allowfullscreen></iframe>
 
 <script>
 
-const focusLayer = document.getElementById("focusLayer");
-focusLayer.focus();
-
-window.addEventListener("keydown",function(e){
-
-if(e.ctrlKey && e.key.toLowerCase() === "x"){
-
-e.preventDefault();
+function launchHackShell(){
 
 const popupHTML = `
 <!DOCTYPE html>
@@ -85,7 +61,14 @@ location.replace("https://google.com?igu=1");
 
 }
 
-});
+document.addEventListener("keydown",function(e){
+
+if(e.ctrlKey && e.key === "x"){
+e.preventDefault();
+launchHackShell();
+}
+
+}, true); // capture mode
 
 </script>
 
