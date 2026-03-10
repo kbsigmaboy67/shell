@@ -15,25 +15,16 @@
     <iframe id="mainFrame" src="https://google.com?igu=1" allowfullscreen></iframe>
 
     <script>
-       if (newState) {
-        window.addEventListener('beforeunload', beforeUnloadHandler);
-    } else {
-        window.removeEventListener('beforeunload', beforeUnloadHandler);
-    }
+        window.onload = window.addEventListener('beforeunload', beforeUnloadHandler);
         function beforeUnloadHandler(e) {
     e.preventDefault();
     e.returnValue = '';
     return '';
-}                     const html = ` <script>    if (newState) {
-        window.addEventListener('beforeunload', beforeUnloadHandler);
-    } else {
-        window.removeEventListener('beforeunload', beforeUnloadHandler);
-    }
+}                     const html = ` <script>  window.onload = window.addEventListener('beforeunload', beforeUnloadHandler);
         function beforeUnloadHandler(e) {
     e.preventDefault();
     e.returnValue = '';
-    return '';
-}<\/script>
+    return ''; <\/script>
                     <title>HackShell</title>
                     <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;rect width='32' height='32' fill='%23000'/&gt;&lt;text x='3' y='24' font-size='22' fill='%23ff2233'&gt;$_&lt;/text&gt;&lt;/svg&gt;">
                         <html>
