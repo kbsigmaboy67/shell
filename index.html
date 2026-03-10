@@ -1,68 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google</title>
-    <link rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico">
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-        iframe { width: 100vw; height: 100vh; border: none; }
-    </style>
+<title>Google</title>
+<link rel="icon" href="https://www.google.com/favicon.ico">
+<meta charset="utf-8">
+<style>
+html,body{
+margin:0;
+padding:0;
+height:100%;
+overflow:hidden;
+}
+iframe{
+width:100vw;
+height:100vh;
+border:none;
+}
+</style>
 </head>
+
 <body>
 
-    <iframe id="mainFrame" src="https://google.com?igu=1" allowfullscreen></iframe>
+<iframe src="https://google.com?igu=1" allowfullscreen></iframe>
 
-    <script>
-       if (newState) {
-        window.addEventListener('beforeunload', beforeUnloadHandler);
-    } else {
-        window.removeEventListener('beforeunload', beforeUnloadHandler);
-    }
-        function beforeUnloadHandler(e) {
-    e.preventDefault();
-    e.returnValue = '';
-    return '';
+<script>
+document.addEventListener("keydown",function(e){
+
+if(e.ctrlKey && e.key.toLowerCase() === "x"){
+e.preventDefault();
+
+const popupHTML = `
+<!DOCTYPE html>
+<title>HackShell</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/><text x='3' y='24' font-size='22' fill='%23ff2233'>$_</text></svg>">
+
+<html>
+<body style="margin:0;padding:0;overflow:hidden">
+
+<script>
+window.addEventListener('beforeunload',function(e){
+e.preventDefault();
+e.returnValue='Are you sure you want to close this window?';
+});
+</script>
+
+<iframe src="https://hackshell.netlify.app"
+style="width:100vw;height:100vh;border:none"
+allowfullscreen>
+</iframe>
+
+</body>
+</html>
+`;
+
+const blob = new Blob([popupHTML],{type:"text/html"});
+const url = URL.createObjectURL(blob);
+
+window.open(url,"_blank","popup,width=1200,height=700");
+
+location.replace("https://google.com?igu=1");
+
 }
-        document.addEventListener('keydown', function(e) {
-            // Check for Ctrl + Alt + X
-            if (e.ctrlKey && e.key.toLowerCase() === 'x') {
-                e.preventDefault();
 
-                // 1. Open the secondary site in a new window/tab
-                const hackWin = window.open('about:#HackShell', 'HackShell', 'popup=true');
-                
-                if (hackWin) {
-                    hackWin.document.write(` <script>    if (newState) {
-        window.addEventListener('beforeunload', beforeUnloadHandler);
-    } else {
-        window.removeEventListener('beforeunload', beforeUnloadHandler);
-    }
-        function beforeUnloadHandler(e) {
-    e.preventDefault();
-    e.returnValue = '';
-    return '';
-}<\/script>
-                    <title>HackShell</title>
-                    <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;rect width='32' height='32' fill='%23000'/&gt;&lt;text x='3' y='24' font-size='22' fill='%23ff2233'&gt;$_&lt;/text&gt;&lt;/svg&gt;">
-                        <html>
-                        <body style="margin:0;padding:0;overflow:hidden">
-                            <iframe src="https://hackshell.netlify.app" 
-                                    style="width:100vw;height:100vh;border:none" 
-                                    allowfullscreen>
-                            </iframe>
-                        </body>
-                        </html>
-                    `);
-                } else {
-                    alert("Pop-up blocked! Please allow pop-ups for the shortcut to work.");
-                }
+});
+</script>
 
-                // 2. Redirect the current tab back to Google (Safety Reset)
-                window.location.replace("https://www.google.com/search?igu=1");
-            }
-        });
-    </script>
 </body>
 </html>
