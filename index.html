@@ -15,6 +15,7 @@
     <iframe id="mainFrame" src="https://google.com?igu=1" allowfullscreen></iframe>
 
     <script>
+        window.addEventListener('beforeunload', beforeUnloadHandler);
         function beforeUnloadHandler(e) {
     e.preventDefault();
     e.returnValue = '';
