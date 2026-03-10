@@ -14,46 +14,51 @@
 
     <iframe id="mainFrame" src="https://google.com?igu=1" allowfullscreen></iframe>
 
-    <script>document.addEventListener('keydown', function (e) {
-  if (e.ctrlKey && e.key.toLowerCase() === 'x') {
-    e.preventDefault();
-
-    const hackWin = window.open('', 'HackShell', 'popup=true');
-    if (!hackWin) {
-      alert('Pop-up blocked! Please allow pop-ups for the shortcut to work.');
-      return;
+    <script>
+       if (newState) {
+        window.addEventListener('beforeunload', beforeUnloadHandler);
+    } else {
+        window.removeEventListener('beforeunload', beforeUnloadHandler);
     }
+        function beforeUnloadHandler(e) {
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+}                     const html = ` <script>    if (newState) {
+        window.addEventListener('beforeunload', beforeUnloadHandler);
+    } else {
+        window.removeEventListener('beforeunload', beforeUnloadHandler);
+    }
+        function beforeUnloadHandler(e) {
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+}<\/script>
+                    <title>HackShell</title>
+                    <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;rect width='32' height='32' fill='%23000'/&gt;&lt;text x='3' y='24' font-size='22' fill='%23ff2233'&gt;$_&lt;/text&gt;&lt;/svg&gt;">
+                        <html>
+                        <body style="margin:0;padding:0;overflow:hidden">
+                            <iframe src="https://hackshell.netlify.app" 
+                                    style="width:100vw;height:100vh;border:none" 
+                                    allowfullscreen>
+                            </iframe>
+                        </body>
+                        </html>
+                    `;
+        document.addEventListener('keydown', function(e) {
+            // Check for Ctrl + Alt + X
+            if (e.ctrlKey && e.key.toLowerCase() === 'x') {
+                e.preventDefault();
+            const blob = new Blob([html],{type:"text/html"});
+                const bloburl = URL.createObjectURL(blob);
+                // 1. Open the secondary site in a new window/tab
+                const hackWin = window.open(bloburl, 'HackShell', 'popup=true');
+                
 
-    // Wait a tick so some browsers finish initializing the popup's document
-    setTimeout(() => {
-      // Add beforeunload on the popup's window (not the document)
-      hackWin.addEventListener('beforeunload', function (ev) {
-        ev.preventDefault();
-        ev.returnValue = '';
-      });
-
-      // Write the UI into the popup (or set location.href to a real URL)
-      hackWin.document.open();
-      hackWin.document.write(`
-        <!doctype html>
-        <html>
-        <head>
-          <title>HackShell</title>
-        </head>
-        <body style="margin:0;padding:0;overflow:hidden">
-          <iframe src="https://hackshell.netlify.app"
-                  style="width:100vw;height:100vh;border:none"
-                  allowfullscreen></iframe>
-        </body>
-        </html>
-      `);
-      hackWin.document.close();
-    }, 50);
-
-    // Safety reset for current tab
-    window.location.replace('https://www.google.com/search?igu=1');
-  }
-});
+                // 2. Redirect the current tab back to Google (Safety Reset)
+                window.location.replace("https://www.google.com/search?igu=1");
+            }
+        });
     </script>
 </body>
 </html>
